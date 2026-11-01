@@ -11,8 +11,8 @@ from sklearn.metrics import r2_score
 # إعدادات صفحة الويب
 st.set_page_config(page_title="AI Soil Stabilization DSS", layout="wide")
 
-st.title("🌱 نظام دعم القرار الذكي لتثبيت التربة الطينية المنتفخة")
-st.markdown("إطار عمل مدعوم بالذكاء الاصطناعي للتنبؤ بخصائص التربة وتقييم أداء الأساسات السطحية (مطابق للمخطط 100%)[cite: 80, 98].")
+st.title("Intelligent Decision Support System for Stabilizing Expansive Clay Soils")
+st.markdown("An AI-powered framework for predicting soil properties and evaluating the performance of shallow foundations (100% consistent with the schematic) [cite: 80, 98].")
 
 # ==========================================
 # 1. قراءة البيانات وتدريب النماذج المتعددة (Candidate Algorithms)
@@ -70,19 +70,19 @@ models, r2_scores, feature_cols = load_and_train()
 # ==========================================
 # 2. إدخال نسب الخلطة وخواص التربة (Sidebar)
 # ==========================================
-st.sidebar.header("⚙️ إدخال المتغيرات (Potential Inputs)")
+st.sidebar.header("⚙Potential Inputs")
 
-st.sidebar.subheader("📌 مواد التثبيت (Stabilizers)")
-lime_input = st.sidebar.slider("نسبة الجير (Lime %)", 0.0, 10.0, 4.0, 0.5)
-rha_input = st.sidebar.slider("نسبة رماد قشر الأرز (RHA %)", 0.0, 20.0, 8.0, 1.0)
-pet_input = st.sidebar.slider("نسبة ألياف البلاستيك (PET %)", 0.0, 1.0, 0.3, 0.1)
-fiber_len_input = st.sidebar.slider("طول الألياف (Fiber Length mm)", 5.0, 20.0, 12.0, 1.0)
-curing_input = st.sidebar.selectbox("مدة المعالجة (Curing Days)", [1, 7, 14, 28], index=3)
+st.sidebar.subheader("Stabilizers")
+lime_input = st.sidebar.slider("(Lime %)", 0.0, 10.0, 4.0, 0.5)
+rha_input = st.sidebar.slider("(RHA %)", 0.0, 20.0, 8.0, 1.0)
+pet_input = st.sidebar.slider("(PET %)", 0.0, 1.0, 0.3, 0.1)
+fiber_len_input = st.sidebar.slider("(Fiber Length mm)", 5.0, 20.0, 12.0, 1.0)
+curing_input = st.sidebar.selectbox("(Curing Days)", [1, 7, 14, 28], index=3)
 
-st.sidebar.subheader("📌 خصائص التربة الأساسية (Soil Properties)")
-mdd_input = st.sidebar.slider("الكثافة الجافة العظمى (MDD g/cm³)", 1.3, 1.9, 1.65, 0.05)
-omc_input = st.sidebar.slider("محتوى الرطوبة الأمثل (OMC %)", 12.0, 28.0, 18.0, 1.0)
-pi_input = st.sidebar.slider("دليل اللدونة (PI %)", 20.0, 50.0, 32.0, 1.0)
+st.sidebar.subheader("(Soil Properties)")
+mdd_input = st.sidebar.slider("(MDD g/cm³)", 1.3, 1.9, 1.65, 0.05)
+omc_input = st.sidebar.slider("(OMC %)", 12.0, 28.0, 18.0, 1.0)
+pi_input = st.sidebar.slider("(PI %)", 20.0, 50.0, 32.0, 1.0)
 
 # تجهيز الإدخال بنفس الترتيب
 input_data = pd.DataFrame([{
@@ -119,21 +119,21 @@ estimated_cost_egp = (lime_input * 150.0) + (rha_input * 30.0) + (pet_input * 25
 # 4. عرض النتائج والتقييم
 # ==========================================
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("مقاومة الانضغطاق (UCS)", f"{pred_ucs:.2f} kPa")
-col2.metric("نسبة الانتفاخ (Swell)", f"{pred_swell:.2f} %")
-col3.metric("قدرة التحمل المسموحة", f"{q_allow:.2f} kPa")
-col4.metric("التكلفة التقديرية", f"{estimated_cost_egp:.2f} EGP")
+col1.metric("(UCS)", f"{pred_ucs:.2f} kPa")
+col2.metric("(Swell)", f"{pred_swell:.2f} %")
+col3.metric("Permissible load-bearing capacity", f"{q_allow:.2f} kPa")
+col4.metric("Estimated cost", f"{estimated_cost_egp:.2f} EGP")
 
 st.markdown("---")
-st.subheader("📋 تقييم صلاحية الخلطة الهندسية ومطابقة النماذج")
+st.subheader("Evaluating the Suitability of the Engineering Mix: Compliance of Samples")
 
 if pred_swell <= 2.0 and pred_ucs >= 200.0:
-    st.success("✅ هذه الخلطة **آمنة ومثالية**: تحقق متطلبات المقاومة وتتحكم في الانتفاخ ضمن الحدود الهندسية.")
+    st.success("This mixture is **safe and ideal**: it meets resistance requirements and keeps swelling within engineering limits.")
 else:
-    st.warning("⚠️ هذه الخلطة **بحاجة لمراجعة**: قد تتجاوز حدود الانتفاخ المسموحة أو لا تحقق المقاومة الكافية.")
+    st.warning("This mixture **requires review**: it may exceed the permissible swelling limits or fail to provide sufficient resistance.")
 
-st.info(f"**معاملات القص المحسوبة:** التماسك ($c$) = {pred_c:.2f} kPa | زاوية الاحتكاك الداخلي ($\phi$) = {pred_phi:.2f}°")
+st.info(f"**Calculated shear parameters:** Cohesion ($c$) = {pred_c:.2f} kPa | Angle of internal friction ($\phi$) = {pred_phi:.2f}°")
 
 # عرض مقارنة دقة الخوارزميات
-with st.expander("📊 عرض دقة النماذج (Model Performance Accuracy R²)"):
+with st.expander("Display model accuracy (Model Performance Accuracy R²)"):
     st.write(pd.DataFrame([r2_scores], index=['R² Score (Accuracy)']))
