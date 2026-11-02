@@ -10,7 +10,7 @@ The application does not certify a mixture or replace laboratory testing, geotec
 
 ### 1. Prediction and foundation calculation
 
-- Reads a CSV selected in the sidebar, or the local `soil_stabilization_dataset.csv` when no upload is selected.
+- Reads a CSV selected in the sidebar, or the local `data/soil_stabilization_dataset.csv` when no upload is selected.
 - Recognizes the input columns listed in the companion Excel template. Column matching is case-insensitive and also accepts a limited set of common aliases.
 - Trains a separate model for each measured response that has at least 30 complete input-response pairs.
 - Shows predictions only for responses represented in the uploaded data.
@@ -123,3 +123,6 @@ The DOE helper also uses SciPy, which is normally installed as a scikit-learn de
 ## Research tasks that remain outside the software
 
 The application cannot perform material characterization, prepare specimens, run UCS/CBR/swell/shear/compressibility tests, determine environmental life-cycle factors, or independently approve foundation design. Those require laboratory measurements, documented material batches and test standards, validated cost/emission inputs, and engineering review. The software supports recording and analyzing such results once they are available.
+## Code structure
+
+`app.py` remains the Streamlit entry point and assembles the page layout. Reusable data, model, prediction, explanation, optimization, experimental-design, validation, and audit logic is organized in the `soil_stabilization/` package. The default CSV is stored in `data/`, the Excel template in `templates/`, and user-facing documentation in `docs/`.

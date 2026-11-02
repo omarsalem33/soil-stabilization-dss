@@ -4,16 +4,27 @@ A Streamlit research prototype for predicting soil-stabilization responses, comp
 
 > **Research use only:** The current dataset's experimental provenance has not been verified. Predictions and optimized candidates are not engineering approval. Confirm data sources, test standards, and results with the laboratory supervisor and geotechnical engineer.
 
-## 1. Project files
+## 1. Project structure
 
-Keep these files together in the project folder:
+```text
+app.py                         Streamlit entry point and page layout
+requirements.txt               Python dependencies
+data/soil_stabilization_dataset.csv  Default dataset
+soil_stabilization/            Reusable application logic
+  data_io.py                   Dataset schema, column matching, CSV loading
+  model_training.py            Candidate models and model fitting
+  model_evaluation.py          Cross-validation ranking and held-out metrics
+  prediction.py                Predictions and exploratory footing estimate
+  explainability.py            SHAP explanations
+  optimization.py              Pareto mixture search
+  experimental_design.py       Laboratory screening plan generation
+  data_validation.py           Independent validation calculations
+  data_audit.py                Dataset audit summaries
+templates/                     Excel data-entry template
+docs/                          User and project documentation
+```
 
-- `app.py` — Streamlit application
-- `soil_stabilization_dataset.csv` — default training dataset
-- `requirements.txt` — Python dependencies
-- `README.md` — these instructions
-
-The app can also use a verified CSV selected through the sidebar uploader.
+Keep `app.py` and `requirements.txt` in the project root for simple local and cloud deployment. The app uses the bundled CSV only when no training file is uploaded. The Excel template is a reference for preparing data; upload CSV UTF-8 files to the app.
 
 ## 2. Install and launch on Windows
 
@@ -44,7 +55,7 @@ Start the application:
 
 Streamlit normally opens the app in your browser at `http://localhost:8501`. If it does not open automatically, copy that address into your browser. Keep the PowerShell window open while using the app. To stop it, press **Ctrl+C** in that window.
 
-If PowerShell says it cannot find Python, install Python 3.10 or later and make sure the `py` launcher is available, then repeat the setup steps.
+If PowerShell says it cannot find Python, install Python 3.11 or later (Python 3.12 is a good default) and make sure the `py` launcher is available, then repeat the setup steps.
 
 ## 3. Prepare the experimental data
 
@@ -120,7 +131,7 @@ Review input ranges, response distributions, input-response correlations, duplic
 ## 6. Troubleshooting
 
 **The app reports that the dataset is missing.**  
-Keep `soil_stabilization_dataset.csv` in the same folder as `app.py`, or upload another CSV through the sidebar.
+Keep the default dataset at `data/soil_stabilization_dataset.csv`, or upload another CSV through the sidebar.
 
 **The app reports missing input or response columns.**  
 Use the canonical column names in the Excel template and Column Guide. A response needs at least 30 measured values paired with complete model inputs to be trained.

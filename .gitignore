@@ -1,0 +1,12 @@
+# Local Python environments
+.venv/
+venv/
+
+# Python caches and editor files
+__pycache__/
+*.py[cod]
+.idea/
+
+# Local secrets and private datasets
+.streamlit/secrets.toml
+data/private/
