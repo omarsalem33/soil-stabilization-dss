@@ -13,10 +13,13 @@ from soil_stabilization.optimization import search_pareto_candidates
 from soil_stabilization.experimental_design import generate_screening_plan
 from soil_stabilization.data_validation import evaluate_validation
 from soil_stabilization.data_audit import summarize_dataset
+from soil_stabilization.branding import (PROJECT_TITLE, render_footer, render_header, render_sidebar_credit,
+)
 
 
-st.set_page_config(page_title="Expansive Soil Stabilization DSS", layout="wide")
-st.title("AI-Assisted Soil Stabilization Research DSS")
+st.set_page_config(page_title=PROJECT_TITLE, page_icon="\U0001F9F1", layout="wide")
+render_header()
+# render_sidebar_credit()
 st.warning(
     "Research prototype only. The supplied dataset's experimental provenance has not been "
     "verified. Predictions and optimization results are not engineering approval or a "
@@ -277,3 +280,5 @@ with tabs[6]:
         "without a documented reason. Add CBR, settlement, bearing capacity, swell pressure, and "
         "compressibility measurements as separate columns if those outcomes are part of the final scope."
     )
+
+render_footer()
